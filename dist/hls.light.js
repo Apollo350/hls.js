@@ -11274,7 +11274,7 @@ var stream_controller_StreamController = /*#__PURE__*/function (_BaseStreamContr
         this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
 
         if (newDetails.PTSKnown && Object(number_isFinite["isFiniteNumber"])(sliding)) {
-          logger["logger"].log("live playlist sliding:" + sliding.toFixed(3));
+          logger["logger"].log("live playlist sliding CHRIS:" + sliding.toFixed(3));
         } else {
           logger["logger"].log('live playlist - outdated PTS, unknown sliding');
           alignStream(this.fragPrevious, lastLevel, newDetails);
@@ -14841,7 +14841,7 @@ var hls_Hls = /*#__PURE__*/function (_Observer) {
      * @type {string}
      */
     get: function get() {
-      return "1.0.0";
+      return "1.0.4";
     }
   }, {
     key: "Events",

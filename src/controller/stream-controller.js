@@ -785,7 +785,7 @@ class StreamController extends BaseStreamController {
         sliding = newDetails.fragments[0].start;
         this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
         if (newDetails.PTSKnown && Number.isFinite(sliding)) {
-          logger.log(`live playlist sliding:${sliding.toFixed(3)}`);
+          logger.log(`live playlist sliding CHRIS:${sliding.toFixed(3)}`);
         } else {
           logger.log('live playlist - outdated PTS, unknown sliding');
           alignStream(this.fragPrevious, lastLevel, newDetails);
