@@ -11288,31 +11288,30 @@ var stream_controller_StreamController = /*#__PURE__*/function (_BaseStreamContr
     var curLevel = this.levels[newLevelId];
     var duration = newDetails.totalduration;
     var sliding = 0;
-    logger["logger"].log("level " + newLevelId + " loaded [" + newDetails.startSN + "," + newDetails.endSN + "],duration:" + duration);
+    logger["logger"].log("level " + newLevelId + " loaded [" + newDetails.startSN + "," + newDetails.endSN + "],duration:" + duration); // if (newDetails.live) {
 
-    if (newDetails.live) {
-      var curDetails = curLevel.details;
+    var curDetails = curLevel.details;
 
-      if (curDetails && newDetails.fragments.length > 0) {
-        // we already have details for that level, merge them
-        mergeDetails(curDetails, newDetails);
-        sliding = newDetails.fragments[0].start;
-        this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
+    if (curDetails && newDetails.fragments.length > 0) {
+      // we already have details for that level, merge them
+      mergeDetails(curDetails, newDetails);
+      sliding = newDetails.fragments[0].start;
+      this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
 
-        if (newDetails.PTSKnown && Object(number_isFinite["isFiniteNumber"])(sliding)) {
-          logger["logger"].log("live playlist sliding CHRIS:" + sliding.toFixed(3));
-        } else {
-          logger["logger"].log('live playlist - outdated PTS, unknown sliding');
-          alignStream(this.fragPrevious, lastLevel, newDetails);
-        }
+      if (newDetails.PTSKnown && Object(number_isFinite["isFiniteNumber"])(sliding)) {
+        logger["logger"].log("live playlist sliding v2:" + sliding.toFixed(3));
       } else {
-        logger["logger"].log('live playlist - first load, unknown sliding');
-        newDetails.PTSKnown = false;
+        logger["logger"].log('live playlist - outdated PTS, unknown sliding');
         alignStream(this.fragPrevious, lastLevel, newDetails);
       }
     } else {
+      logger["logger"].log('live playlist - first load, unknown sliding');
       newDetails.PTSKnown = false;
-    } // override level info
+      alignStream(this.fragPrevious, lastLevel, newDetails);
+    } // } else {
+    //   newDetails.PTSKnown = false;
+    // }
+    // override level info
 
 
     curLevel.details = newDetails;
@@ -20645,7 +20644,7 @@ var hls_Hls = /*#__PURE__*/function (_Observer) {
      * @type {string}
      */
     get: function get() {
-      return "1.0.4";
+      return "1.0.6";
     }
   }, {
     key: "Events",
