@@ -777,27 +777,28 @@ class StreamController extends BaseStreamController {
 
     logger.log(`level ${newLevelId} loaded [${newDetails.startSN},${newDetails.endSN}],duration:${duration}`);
 
-    if (newDetails.live) {
-      let curDetails = curLevel.details;
-      if (curDetails && newDetails.fragments.length > 0) {
-        // we already have details for that level, merge them
-        LevelHelper.mergeDetails(curDetails, newDetails);
-        sliding = newDetails.fragments[0].start;
-        this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
-        if (newDetails.PTSKnown && Number.isFinite(sliding)) {
-          logger.log(`live playlist sliding:${sliding.toFixed(3)}`);
-        } else {
-          logger.log('live playlist - outdated PTS, unknown sliding');
-          alignStream(this.fragPrevious, lastLevel, newDetails);
-        }
+    // if (newDetails.live) {
+    let curDetails = curLevel.details;
+    if (curDetails && newDetails.fragments.length > 0) {
+      // we already have details for that level, merge them
+      LevelHelper.mergeDetails(curDetails, newDetails);
+      sliding = newDetails.fragments[0].start;
+      this.liveSyncPosition = this.computeLivePosition(sliding, curDetails);
+      if (newDetails.PTSKnown && Number.isFinite(sliding)) {
+        logger.log(`live playlist sliding v2:${sliding.toFixed(3)}`);
       } else {
-        logger.log('live playlist - first load, unknown sliding');
-        newDetails.PTSKnown = false;
+        logger.log('live playlist - outdated PTS, unknown sliding');
         alignStream(this.fragPrevious, lastLevel, newDetails);
       }
     } else {
+      logger.log('live playlist - first load, unknown sliding');
       newDetails.PTSKnown = false;
+      alignStream(this.fragPrevious, lastLevel, newDetails);
     }
+    // } else {
+    //   newDetails.PTSKnown = false;
+    // }
+
     // override level info
     curLevel.details = newDetails;
     this.levelLastLoaded = newLevelId;

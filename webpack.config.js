@@ -5,6 +5,7 @@ const merge = require('webpack-merge');
 const importHelper = require('@babel/helper-module-imports');
 
 /* Allow to customise builds through env-vars */
+// CL test adding a comment here
 const env = process.env;
 
 const addSubtitleSupport = !!env.SUBTITLE || !!env.USE_SUBTITLES;
